@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  blog:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    environment:
+      MYSQL_HOST: db
+    command: bash -c "flask run -h 0.0.0.0 -p 5000"
+    stdin_open: true
+    tty: true
+  db:
+    image: mysql:8
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+       MYSQL_DATABASE: python_efi_mar_pal_sch
+       MYSQL_USER: BD2021
+       MYSQL_PASSWORD: BD2021itec
+       MYSQL_ROOT_PASSWORD: BD2021itec
